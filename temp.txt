@@ -1,0 +1,1 @@
+parser (lexer "if (x > x ^ true) true then 1 else 2")
