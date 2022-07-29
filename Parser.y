@@ -10,18 +10,21 @@ import Lexer
 %error { parseError }
 
 %token
-    num   { TkNum $$ }
-    var   { TkVar $$ }
-    '+'   { TkAdd }
-    '^'   { TkAnd }
-    '>'   { TkApply }
-    '('   { TkLParen }
-    ')'   { TkRParen }
-    true  { TkTrue }
-    false { TkFalse }
-    if    { TkIf }
-    then  { TkThen }
-    else  { TkElse }
+    num     { TkNum $$  }
+    var     { TkVar $$  }
+    '+'     { TkAdd     }
+    '^'     { TkAnd     }
+    '>'     { TkApply   }
+    ':'     { TkInferTy }
+    '('     { TkLParen  }
+    ')'     { TkRParen  }
+    tybool  { TkTyBool  }
+    tynum   { TkTyNum   } 
+    true    { TkTrue    }
+    false   { TkFalse   }
+    if      { TkIf      }
+    then    { TkThen    }
+    else    { TkElse    }
 
 
 %nonassoc if then else
@@ -29,16 +32,21 @@ import Lexer
 
 %% 
 
-Exp     : num                       { Num $1 }
-        | var                       { Var $1}
-        | true                      { MyTrue }
-        | false                     { MyFalse }
-        | Exp '+' Exp               { Add $1 $3 }
-        | Exp '^' Exp               { And $1 $3}
-        | '(' Exp ')'               { Paren $2}
-        | if Exp then Exp else Exp  { If $2 $4 $6 }
-        | var '>' Exp               { Lam $1 $3 }
-        | Exp Exp                   { App $1 $2}
+Exp     : num                               { Num $1                         }
+        | var                               { Var $1                         }
+        | true                              { MyTrue                         }
+        | false                             { MyFalse                        }
+        | Exp '+' Exp                       { Add $1 $3                      }
+        | Exp '^' Exp                       { And $1 $3                      }
+        | '(' Exp ')'                       { Paren $2                       }
+        | if Exp then Exp else Exp          { If $2 $4 $6                    }
+        | var ':' tybool '>' Exp            { Lam $1 TBool $5                }
+        | var ':' tynum '>' Exp             { Lam $1 TNum $5                 }
+        | var ':' tynum tynum '>' Exp       { Lam $1 ( TFun TNum TNum ) $6   }
+        | var ':' tynum tybool '>' Exp      { Lam $1 ( TFun TNum TBool ) $6  }
+        | var ':' tybool tybool '>' Exp     { Lam $1 ( TFun TBool TBool ) $6 }
+        | var ':' tybool tynum  '>' Exp     { Lam $1 ( TFun TBool TNum ) $6  }
+        | Exp Exp                           { App $1 $2                      }
 
 
 {

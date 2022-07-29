@@ -15,6 +15,7 @@ data Token = TkTrue
           | TkTyNum
           | TkVar String
           | TkApply
+          | TkInferTy
           | TkAdd
           | TkAnd 
           | TkLParen
@@ -32,6 +33,7 @@ lexer ('^':cs) = TkAnd : lexer cs
 lexer ('(':cs) = TkLParen : lexer cs
 lexer (')':cs) = TkRParen : lexer cs
 lexer ('>':cs) = TkApply : lexer cs
+lexer (':':cs) = TkInferTy : lexer cs
 lexer (c:cs)
     | isSpace c = lexer cs 
     | isDigit c = lexNum (c:cs)

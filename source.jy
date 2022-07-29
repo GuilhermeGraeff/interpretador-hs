@@ -1,1 +1,3 @@
 if true ^ false ^ false then 3 else 4
+
+parser (lexer "if ( x : Bool Bool > x y )( true ^ false ^ false ) then 3 else 4")
