@@ -15,6 +15,12 @@ typeof ctx (Paren e) = typeof ctx e     -- T-Paren (adaptado)
 typeof ctx (Add e1 e2) = case (typeof ctx e1, typeof ctx e2) of       -- T-Add  (Se e1 for TNum e e2 for TNum -> Add e1 e2 = TNum)
                             (Just TNum, Just TNum) -> Just TNum
                             _                      -> Nothing
+typeof ctx (Sub e1 e2) = case (typeof ctx e1, typeof ctx e2) of       -- T-Sub  (Se e1 for TNum e e2 for TNum -> Sub e1 e2 = TNum)
+                            (Just TNum, Just TNum) -> Just TNum
+                            _                      -> Nothing
+typeof ctx (Mul e1 e2) = case (typeof ctx e1, typeof ctx e2) of       -- T-Mul  (Se e1 for TNum e e2 for TNum -> Mul e1 e2 = TNum)
+                            (Just TNum, Just TNum) -> Just TNum
+                            _                      -> Nothing
 typeof ctx (And e1 e2) = case (typeof ctx e1, typeof ctx e2) of       -- T-And  (Se e1 for TBool e e2 for TBool -> Add e1 e2 = TBool)
                             (Just TBool, Just TBool) -> Just TBool
                             _                      -> Nothing
@@ -24,6 +30,9 @@ typeof ctx (If e1 e2 e3) = case (typeof ctx e1, typeof ctx e2, typeof ctx e3) of
                                                               else 
                                                                 Nothing
                             _                      -> Nothing
+typeof ctx (Let v e1 e2) = case typeof ctx e1 of 
+                            Just t1    -> typeof ((v,t1):ctx) e2
+                            _          -> Nothing
 
 
 

@@ -17,23 +17,31 @@ data Token = TkTrue
           | TkApply
           | TkInferTy
           | TkAdd
+          | TkSub
+          | TkMul
           | TkAnd 
           | TkLParen
           | TkRParen
           | TkIf
           | TkThen
           | TkElse
+          | TkLet
+          | TkLetEquals
+          | TkLetIn
           deriving Show
 
 
 lexer :: String -> [Token]
 lexer [] = [] 
 lexer ('+':cs) = TkAdd : lexer cs
+lexer ('-':cs) = TkSub : lexer cs
+lexer ('*':cs) = TkMul : lexer cs
 lexer ('^':cs) = TkAnd : lexer cs
 lexer ('(':cs) = TkLParen : lexer cs
 lexer (')':cs) = TkRParen : lexer cs
 lexer ('>':cs) = TkApply : lexer cs
 lexer (':':cs) = TkInferTy : lexer cs
+lexer ('=':cs) = TkLetEquals : lexer cs
 lexer (c:cs)
     | isSpace c = lexer cs 
     | isDigit c = lexNum (c:cs)
@@ -51,4 +59,6 @@ lexKW cs = case span isAlpha cs of
                  ("false", rest)  -> TkFalse : lexer rest
                  ("Bool", rest)   -> TkTyBool : lexer rest
                  ("Num", rest)    -> TkTyNum : lexer rest
+                 ("let", rest)    -> TkLet : lexer rest
+                 ("in", rest)     -> TkLetIn : lexer rest
                  ( v , rest)      -> TkVar v : lexer rest

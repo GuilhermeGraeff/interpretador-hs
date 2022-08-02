@@ -12,7 +12,10 @@ subst x n b@(Var v) = if v == x then
 subst x n (Lam v t b) = Lam v t (subst x n b)
 subst x n (App e1 e2) = App (subst x n e1) (subst x n e2)
 subst x n (Add e1 e2) = Add (subst x n e1) (subst x n e2)
+subst x n (Sub e1 e2) = Sub (subst x n e1) (subst x n e2)
+subst x n (Mul e1 e2) = Mul (subst x n e1) (subst x n e2)
 subst x n (And e1 e2) = And (subst x n e1) (subst x n e2)
+subst x n (Paren e1) = Paren (subst x n e1)
 subst x n e = e
 
 
@@ -37,6 +40,14 @@ step (Add (Num n1) (Num n2)) = Num (n1+n2)
 step (Add (Num n1) e2) = Add (Num n1) (step e2)
 step (Add e1 e2) = Add (step e1) e2
 
+step (Sub (Num n1) (Num n2)) = Num (n1-n2)
+step (Sub (Num n1) e2) = Sub (Num n1) (step e2)
+step (Sub e1 e2) = Sub (step e1) e2
+
+step (Mul (Num n1) (Num n2)) = Num (n1*n2)
+step (Mul (Num n1) e2) = Mul (Num n1) (step e2)
+step (Mul e1 e2) = Mul (step e1) e2
+
 step (And MyFalse _) = MyFalse
 step (And MyTrue MyFalse) = MyFalse
 step (And MyTrue MyTrue) = MyTrue
@@ -46,6 +57,9 @@ step (And e1 e2) = And (step e1) e2
 step (If MyTrue e2 _) = step e2
 step (If MyFalse _ e3 ) = step e3 
 step (If e1 e2 e3 ) = If (step e1) e2 e3
+
+step (Let x e1 e2) | is_value e1 = subst x e1 e2
+                   | otherwise   = (Let x ( step e1 ) e2)
 
 step e = e 
 
