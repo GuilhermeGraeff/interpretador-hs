@@ -1,1 +1,16 @@
-parser (lexer "if (x > x ^ true) true then 1 else 2")
+Code examples:
+
+let x = if ( true ^ true ) then 15 else 25 in ( x + 10 )      - Num 25
+let x = if ( true ^ false ) then 15 else 25 in ( x + 10 )     - Num 35
+
+(x : Bool > x ^ true ) false     - MyFalse
+(x : Bool > x ^ true ) true      - MyTrue
+
+(x : Bool Bool > x true ^ y) (y : Bool > y ^ true)         - Dead Lock
+
+(x : Bool Bool > x true ^ true) (y : Bool > y ^ true)      - MyTrue
+(x : Bool Bool > x true ^ true) (y : Bool > y ^ false)     - MyFalse
+
+if (x : Num Bool > x 12 * 3 * 1) (y : Num > y + 1000) then true else false    - Type error: erro na verificação de tipos
+if true then (x : Num Num > x 12 * 3 * 1) (y : Num > y + 1000) else 2         - Num 1036
+if false then (x : Num Num > x 12 * 3 * 1) (y : Num > y + 1000) else 2        - Num 2
