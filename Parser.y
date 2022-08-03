@@ -20,6 +20,9 @@ import Lexer
     ':'     { TkInferTy   }
     '('     { TkLParen    }
     ')'     { TkRParen    }
+    '|'     { TkPair      }
+    ','     { TkSep       }
+    '.'     { TkProj       }
     tybool  { TkTyBool    }
     tynum   { TkTyNum     } 
     true    { TkTrue      }
@@ -47,16 +50,18 @@ Exp     : num                               { Num $1                         }
         | Exp '^' Exp                       { And $1 $3                      }
         | '(' Exp ')'                       { Paren $2                       }
         | if Exp then Exp else Exp          { If $2 $4 $6                    }
-        | var ':' tybool '>' Exp            { Lam $1 TBool $5                }
-        | var ':' tynum '>' Exp             { Lam $1 TNum $5                 }
-        | var ':' tynum tynum '>' Exp       { Lam $1 ( TFun TNum TNum ) $6   }
-        | var ':' tynum tybool '>' Exp      { Lam $1 ( TFun TNum TBool ) $6  }
-        | var ':' tybool tybool '>' Exp     { Lam $1 ( TFun TBool TBool ) $6 }
-        | var ':' tybool tynum  '>' Exp     { Lam $1 ( TFun TBool TNum ) $6  }
+        | var ':' LambdaTypes '>' Exp       { Lam $1 $3 $5                   }
         | Exp Exp                           { App $1 $2                      }
         | let var '=' Exp in Exp            { Let $2 $4 $6                   }
+        | '|' Exp ',' Exp '|'               { Pair $2 $4                     }
+        | Exp '.' num                       { Proj $1 $3                     }
 
-
+LambdaTypes  : tybool                           { TBool }
+       | tynum                                  { TNum }
+       | tynum tynum                            { TFun TNum TNum }
+       | tybool tynum                           { TFun TBool TNum }
+       | tynum tybool                           { TFun TNum TBool }
+       | tybool tybool                          { TFun TBool TBool }
 
 {
 
@@ -73,7 +78,12 @@ data Expr = Num   Int
           | Lam   String Ty Expr
           | App   Expr Expr
           | Let   String Expr Expr
+          | Pair  Expr Expr
+          | Proj  Expr Int
           deriving Show
+
+
+
 
 
 parseError :: [Token] -> a

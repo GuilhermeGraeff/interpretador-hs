@@ -16,6 +16,12 @@ subst x n (Sub e1 e2) = Sub (subst x n e1) (subst x n e2)
 subst x n (Mul e1 e2) = Mul (subst x n e1) (subst x n e2)
 subst x n (And e1 e2) = And (subst x n e1) (subst x n e2)
 subst x n (Paren e1) = Paren (subst x n e1)
+subst x n (Let v e1 e2) = Let v (subst x n e1) (subst x n e2)
+subst x n (Pair e1 e2) = Pair (subst x n e1) (subst x n e2)
+subst x n (Proj e1 i) = Proj (subst x n e1) i
+subst x n (If e1 e2 e3) = If (subst x n e1) (subst x n e2) (subst x n e3)
+
+
 subst x n e = e
 
 
@@ -23,6 +29,7 @@ is_value :: Expr -> Bool
 is_value MyTrue = True
 is_value MyFalse = True
 is_value (Num _ ) = True
+is_value (Pair _ _ ) = True
 is_value (Lam _ _ _ ) = True
 is_value _          = False
 
@@ -60,6 +67,14 @@ step (If e1 e2 e3 ) = If (step e1) e2 e3
 
 step (Let x e1 e2) | is_value e1 = subst x e1 e2
                    | otherwise   = (Let x ( step e1 ) e2)
+
+step (Pair e1 e2)  | ((is_value e1) && (is_value e2)) = Pair e1 e2
+                   | is_value e1 = Pair e1 (step e2)
+                   | otherwise = Pair (step e1) e2
+
+step (Proj (Pair e1 e2) n) | n == 1      = e1
+                           | n == 2      = e2
+                           | otherwise   = error "Semantic error: projeção inválida"
 
 step e = e 
 

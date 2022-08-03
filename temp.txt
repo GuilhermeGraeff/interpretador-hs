@@ -15,5 +15,16 @@ if (x : Num Bool > x 12 * 3 * 1) (y : Num > y + 1000) then true else false    - 
 if true then (x : Num Num > x 12 * 3 * 1) (y : Num > y + 1000) else 2         - Num 1036
 if false then (x : Num Num > x 12 * 3 * 1) (y : Num > y + 1000) else 2        - Num 2
 
+
+typecheck $ parser $ lexer "if true then |123,213|.1 else |123,213|.2"    - (if sí aceita bool como condição)erro na verificação de tipos
+typeof [] ( parser $ lexer "if true then |123,213|.1 else |123,213|.2")   - Just TNum
+
+if |true,false|.2 then 10 + |123,213|.1 else |123,213|.1")         - Num 123
+
+if |true,false|.1 then 10 + |123,213|.1 else |123,213|.1")         - Num 133
+
+
+
 Just because you’ve implemented something doesn’t mean you understand it.
 —Brian Cantwell Smith
+

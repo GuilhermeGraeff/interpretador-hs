@@ -33,6 +33,16 @@ typeof ctx (If e1 e2 e3) = case (typeof ctx e1, typeof ctx e2, typeof ctx e3) of
 typeof ctx (Let v e1 e2) = case typeof ctx e1 of 
                             Just t1    -> typeof ((v,t1):ctx) e2
                             _          -> Nothing
+typeof ctx (Pair e1 e2) = case (typeof ctx e1, typeof ctx e2) of 
+                            (Just t1, Just t2)    -> Just (TPair t1 t2)
+                            _          -> Nothing
+typeof ctx (Proj e 1) = case (typeof ctx e) of 
+                          Just (TPair t11 t12)  -> Just t11
+                          _          -> Nothing
+typeof ctx (Proj e 2) = case (typeof ctx e) of 
+                          Just (TPair t11 t12)  -> Just t12
+                          _          -> Nothing
+typeof ctx (Proj e n) = error "Type error: projeção out of index"
 
 
 

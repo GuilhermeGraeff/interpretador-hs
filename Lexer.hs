@@ -5,6 +5,7 @@ import Data.Char
 data Ty = TBool
         | TNum
         | TFun Ty Ty
+        | TPair Ty Ty
         deriving (Show, Eq)
 
 -- Lista de tokens válidos
@@ -28,6 +29,9 @@ data Token = TkTrue
           | TkLet
           | TkLetEquals
           | TkLetIn
+          | TkPair
+          | TkSep
+          | TkProj
           deriving Show
 
 
@@ -42,6 +46,9 @@ lexer (')':cs) = TkRParen : lexer cs
 lexer ('>':cs) = TkApply : lexer cs
 lexer (':':cs) = TkInferTy : lexer cs
 lexer ('=':cs) = TkLetEquals : lexer cs
+lexer ('|':cs) = TkPair : lexer cs
+lexer (',':cs) = TkSep : lexer cs
+lexer ('.':cs) = TkProj : lexer cs
 lexer (c:cs)
     | isSpace c = lexer cs 
     | isDigit c = lexNum (c:cs)
