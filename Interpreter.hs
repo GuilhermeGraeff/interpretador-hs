@@ -29,7 +29,8 @@ is_value :: Expr -> Bool
 is_value MyTrue = True
 is_value MyFalse = True
 is_value (Num _ ) = True
-is_value (Pair _ _ ) = True
+is_value (Pair e1 e2 ) = if (is_value e1) && (is_value e2) then True else False
+is_value (Tuple e) = if and (map is_value e) then True else False
 is_value (Lam _ _ _ ) = True
 is_value _          = False
 
@@ -72,12 +73,20 @@ step (Pair e1 e2)  | ((is_value e1) && (is_value e2)) = Pair e1 e2
                    | is_value e1 = Pair e1 (step e2)
                    | otherwise = Pair (step e1) e2
 
-step (Proj (Pair e1 e2) n) | n == 1      = e1
-                           | n == 2      = e2
-                           | otherwise   = error "Semantic error: projeção inválida"
+step (Proj (Pair e1 e2) n)  | (is_value e1) && (n == 1) = e1
+                            | (is_value e2) && (n == 2) = e2
+                            | n == 1 = step e1
+                            | n == 2 = step e2
+                            | n > 2 && n <=0 = error "Projection out of index"      
+
+step (Proj (Tuple es) n) | (is_value(es!!(n-1))) = es!!(n-1)
+                         | otherwise             = step (es!!(n-1))
+
+step (Tuple (es))  = Tuple (map step es)
 
 step e = e 
 
+
 eval :: Expr -> Expr 
 eval e | is_value e = e 
-        | otherwise = eval (step e)
+       | otherwise = eval (step e)

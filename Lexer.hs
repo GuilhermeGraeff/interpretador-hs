@@ -6,6 +6,8 @@ data Ty = TBool
         | TNum
         | TFun Ty Ty
         | TPair Ty Ty
+        | TTuple [Ty]
+        | TNull
         deriving (Show, Eq)
 
 -- Lista de tokens válidos
@@ -23,13 +25,16 @@ data Token = TkTrue
           | TkAnd 
           | TkLParen
           | TkRParen
+          | TkLCol
+          | TkRCol
           | TkIf
           | TkThen
           | TkElse
           | TkLet
           | TkLetEquals
           | TkLetIn
-          | TkPair
+          | TkLPair
+          | TkRPair
           | TkSep
           | TkProj
           deriving Show
@@ -43,10 +48,13 @@ lexer ('*':cs) = TkMul : lexer cs
 lexer ('^':cs) = TkAnd : lexer cs
 lexer ('(':cs) = TkLParen : lexer cs
 lexer (')':cs) = TkRParen : lexer cs
+lexer ('[':cs) = TkLCol : lexer cs
+lexer (']':cs) = TkRCol : lexer cs
 lexer ('>':cs) = TkApply : lexer cs
 lexer (':':cs) = TkInferTy : lexer cs
 lexer ('=':cs) = TkLetEquals : lexer cs
-lexer ('|':cs) = TkPair : lexer cs
+lexer ('{':cs) = TkLPair : lexer cs
+lexer ('}':cs) = TkRPair : lexer cs
 lexer (',':cs) = TkSep : lexer cs
 lexer ('.':cs) = TkProj : lexer cs
 lexer (c:cs)
