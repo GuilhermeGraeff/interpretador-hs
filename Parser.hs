@@ -16,7 +16,7 @@ data HappyAbsSyn t4 t5 t6
 	| HappyAbsSyn6 t6
 
 happyExpList :: Happy_Data_Array.Array Int Int
-happyExpList = Happy_Data_Array.listArray (0,286) ([16576,9989,128,0,0,0,32256,14634,1,2,6144,57512,12292,49488,24585,33440,19,0,0,0,0,5379,156,4,0,0,1024,43512,1508,21488,2509,42976,5018,0,2,40832,20043,0,768,0,0,3072,28756,6146,57512,12292,49488,24585,33440,16403,0,0,0,0,0,0,0,0,0,0,0,0,1024,0,0,96,0,192,0,0,0,0,1536,14378,3073,28756,6146,57512,12292,49488,57353,37543,49235,9551,32823,23199,78,0,0,0,0,0,0,0,0,0,0,41056,4994,0,0,0,0,768,39957,1536,14378,1,0,8192,1,0,0
+happyExpList = Happy_Data_Array.listArray (0,347) ([16576,9989,128,0,0,0,32256,14634,1,2,6144,57512,12292,49488,24585,33440,19,0,0,0,0,5379,156,4,0,0,1024,43512,1508,21488,2509,42976,5018,0,2,40832,20043,0,768,0,0,3072,28756,6146,57512,12292,49488,24585,33440,16403,0,0,0,0,28,0,0,0,64,0,128,0,1024,0,0,96,0,192,0,0,0,0,1536,14378,3073,28756,6146,57512,12292,49488,57353,37543,49235,9551,32823,23199,78,0,0,0,0,0,0,0,0,0,0,41056,4994,0,0,0,0,768,39957,1536,14378,61441,16384,57346,0,0,0
 	])
 
 {-# NOINLINE happyExpListPerState #-}
@@ -281,55 +281,46 @@ action_25 _ = happyReduce_16
 
 action_26 (7) = happyShift action_2
 action_26 (8) = happyShift action_4
+action_26 (9) = happyShift action_20
 action_26 (10) = happyShift action_21
 action_26 (11) = happyShift action_22
+action_26 (12) = happyFail []
 action_26 (15) = happyShift action_5
 action_26 (17) = happyShift action_6
 action_26 (19) = happyShift action_7
 action_26 (22) = happyShift action_24
 action_26 (25) = happyShift action_8
 action_26 (26) = happyShift action_9
-action_26 (30) = happyShift action_11
+action_26 (27) = happyFail []
+action_26 (30) = happyFail []
 action_26 (4) = happyGoto action_19
 action_26 _ = happyReduce_8
 
 action_27 (7) = happyShift action_2
 action_27 (8) = happyShift action_4
-action_27 (9) = happyShift action_20
-action_27 (10) = happyShift action_21
-action_27 (11) = happyShift action_22
-action_27 (12) = happyShift action_23
 action_27 (15) = happyShift action_5
 action_27 (17) = happyShift action_6
 action_27 (19) = happyShift action_7
 action_27 (22) = happyShift action_24
 action_27 (25) = happyShift action_8
 action_27 (26) = happyShift action_9
-action_27 (27) = happyShift action_10
-action_27 (30) = happyShift action_11
 action_27 (4) = happyGoto action_19
 action_27 _ = happyReduce_7
 
 action_28 (7) = happyShift action_2
 action_28 (8) = happyShift action_4
-action_28 (9) = happyShift action_20
-action_28 (10) = happyShift action_21
 action_28 (11) = happyShift action_22
-action_28 (12) = happyShift action_23
 action_28 (15) = happyShift action_5
 action_28 (17) = happyShift action_6
 action_28 (19) = happyShift action_7
 action_28 (22) = happyShift action_24
 action_28 (25) = happyShift action_8
 action_28 (26) = happyShift action_9
-action_28 (27) = happyShift action_10
-action_28 (30) = happyShift action_11
 action_28 (4) = happyGoto action_19
 action_28 _ = happyReduce_6
 
 action_29 (7) = happyShift action_2
 action_29 (8) = happyShift action_4
-action_29 (10) = happyShift action_21
 action_29 (11) = happyShift action_22
 action_29 (15) = happyShift action_5
 action_29 (17) = happyShift action_6
@@ -337,7 +328,6 @@ action_29 (19) = happyShift action_7
 action_29 (22) = happyShift action_24
 action_29 (25) = happyShift action_8
 action_29 (26) = happyShift action_9
-action_29 (30) = happyShift action_11
 action_29 (4) = happyGoto action_19
 action_29 _ = happyReduce_5
 
@@ -546,7 +536,7 @@ action_53 (8) = happyShift action_4
 action_53 (9) = happyShift action_20
 action_53 (10) = happyShift action_21
 action_53 (11) = happyShift action_22
-action_53 (12) = happyShift action_23
+action_53 (12) = happyFail []
 action_53 (15) = happyShift action_5
 action_53 (17) = happyShift action_6
 action_53 (19) = happyShift action_7
@@ -554,7 +544,7 @@ action_53 (22) = happyShift action_24
 action_53 (25) = happyShift action_8
 action_53 (26) = happyShift action_9
 action_53 (27) = happyFail []
-action_53 (30) = happyShift action_11
+action_53 (30) = happyFail []
 action_53 (4) = happyGoto action_19
 action_53 _ = happyReduce_11
 

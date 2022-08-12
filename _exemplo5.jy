@@ -1,0 +1,1 @@
+(x : Bool Bool > x true ^ y) (y : Bool > y ^ true)

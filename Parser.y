@@ -22,8 +22,8 @@ import Lexer
     ')'     { TkRParen    }
     '['     { TkLCol      }
     ']'     { TkRCol      }
-    '{'     { TkLPair      }
-    '}'     { TkRPair      }
+    '{'     { TkLPair     }
+    '}'     { TkRPair     }
     ','     { TkSep       }
     '.'     { TkProj      }
     tybool  { TkTyBool    }
@@ -37,10 +37,10 @@ import Lexer
     '='     { TkLetEquals }
     in      { TkLetIn     }
 
-
-%nonassoc if then else
-%left '+' '^'
-
+%right in
+%nonassoc if then else let '^' in 
+%left '+' '-' 
+%left '*' 
 %% 
 
 Exp     : num                               { Num $1                         }

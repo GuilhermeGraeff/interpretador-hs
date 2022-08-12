@@ -50,11 +50,8 @@ typeof ctx (Proj e n) = case (typeof ctx e, n) of
                                                             Just (types!!(n-1))
                           _          -> Nothing
 
-typeof ctx (Tuple e) = case map (typeof ctx) e of 
-                              types          -> case map fromJust' types of 
-                                                 types -> (Just (TTuple types))
-                                                 _     -> Nothing
-                              _              -> Nothing
+typeof ctx (Tuple e) = let types = map (fromJust' . typeof ctx) e 
+                        in (Just (TTuple types))
 
 
 
